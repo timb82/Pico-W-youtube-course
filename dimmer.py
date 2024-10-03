@@ -39,20 +39,21 @@ led_g.freq(1000)
 led_g.duty_u16(0)
 
 # led_y = Pin(Y_PIN, Pin.OUT)
-# led_g = Pin(G_PIN, Pin.OUT)
 # leds = [led_g, led_y, led_r]
 
 while True:
     try:
         val = readADC()
         print(brightness(val))
-        # duty1 = brightness(val) * 2**16 / 100
-        # duty2 = brightness(65536 * (1 - val / 100)) * 2**16 / 100
-        # print(duty2)
-        # # duty2 = brightness(val) * 2**16 / 100
-        # print(f"{round(3.3 / (2**16 - 1) * duty1,2):.02f} V")
-        # led_r.duty_u16(int(round(duty1)))
-        # led_g.duty_u16(int(round(duty2)))
+        duty1 = brightness(val) * 2**16 / 100
+        duty2 = brightness(65536 * (1 - val / 100)) * 2**16 / 100
+        print(duty2)
+        duty2 = brightness(val) * 2**16 / 100
+        print(f"{round(3.3 / (2**16 - 1) * duty1,2):.02f} V")
+        led_r.duty_u16(int(round(duty1)))
+        led_g.duty_u16(int(round(duty2)))
         sleep(0.1)
     except KeyboardInterrupt:
+        led_g.duty_u16(0)
+        led_r.duty_u16(0)
         break
