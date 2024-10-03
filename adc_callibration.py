@@ -30,14 +30,11 @@ x1 = 0
 y1 = round(sum(low) / len(low))
 x2 = 2**16 - 1
 y2 = round(sum(high) / len(high)) - y1
-
 a = (y1 + y2) / (x1 + x2)
 b = a * x1 - y1
-# print(f"a = {a}\n b={b}\n")
 
 print(f"Low:\nmin: {min(low)},\tavg:{y1}\n")
 print(f"High:\nmax: {max(high)},\tavg:{y2}\n")
-
 
 while True:
     try:
@@ -51,5 +48,5 @@ while True:
         sleep(0.25)
     except KeyboardInterrupt:
         print(f"y1 = \t{y1}\ny2 = \t{y2}")
-        print(f"round(A / {y2} * (pot.read_u16() - {y1}), 3)")
+        print(f"A / {y2} * (pot.read_u16() - {y1})")
         break
