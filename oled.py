@@ -6,7 +6,7 @@ i2c = I2C(id=0, sda=Pin(4), scl=Pin(5))
 display = SSD1306_I2C(128, 64, i2c)
 
 display.text("Hej Ewka!!!", 0, 10, 1)
-display.text("Halo Marta", 0, 30, 1)
+display.text("Halo Marta!!!", 0, 30, 1)
 
 display.show()
 
