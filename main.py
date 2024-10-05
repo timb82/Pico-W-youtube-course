@@ -1,5 +1,14 @@
-from machine import Pin, I2C
+from machine import Pin, I2C, PWM
 from ssd1306 import SSD1306_I2C
+from utime import sleep
+
+R_PIN = 11
+Y_PIN = 12
+G_PIN = 13
+
+led_r = Pin(R_PIN, Pin.OUT)
+led_g = Pin(G_PIN, Pin.OUT)
+led_y = Pin(Y_PIN, Pin.OUT)
 
 # using default address 0x3C
 i2c = I2C(id=0, sda=Pin(4), scl=Pin(5))
@@ -9,6 +18,20 @@ display.text("Hej Ewka!!!", 0, 10, 1)
 display.text("Halo Marta", 0, 30, 1)
 
 display.show()
+
+while True:
+    led_g.value(1)
+    led_y.value(0)
+    led_r.value(0)
+    sleep(0.4)
+    led_g.value(0)
+    led_y.value(1)
+    led_r.value(0)
+    sleep(0.4)
+    led_g.value(0)
+    led_y.value(0)
+    led_r.value(1)
+    sleep(0.4)
 
 # # display.fill(0)
 # # display.show()
