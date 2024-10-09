@@ -29,8 +29,8 @@ while True:
             pass
 
         try:
-            if my_color.count(',') ==2:
-                my_color = (my_color.split(','))
+            if my_color.count(',') ==2:                     # type:ignore
+                my_color = (my_color.split(','))            # type:ignore
                 my_color = tuple(int(x) for x in my_color)
         except ValueError:
             pass
