@@ -32,10 +32,10 @@ def bar(rgb, chn):
     dx = 16 # offset for label before a bar
     chn_list = ['R', 'G', 'B'] # labels
     display.text(chn_list[chn], x-dx, y+dy*chn+1)
-    display.rect(97, y+dy*chn,31,8,0,True)
+    display.rect(97, y+dy*chn,31,8,0,True) # clear area for value text
     display.text(str(int(rgb[chn]))+"%",97,y+dy*chn)
-    display.rect(x, y + dy * chn, w, h, 1, False)
-    display.rect(x+2, y+2 + dy*chn, w-2, h-2, 0, True)
+    display.rect(x, y + dy * chn, w, h, 1, False) # draw bar frame
+    display.rect(x+2, y+2 + dy*chn, w-4, h-4, 0, True) # clear bar
     display.rect(x+2, y+2 +dy*chn, int(rgb[chn]*(w-4)/100), h-4, 1, True)
     display.show()
 
@@ -59,7 +59,7 @@ val_old = r.value()
 btn_old = 1
 
 chn = 0
-rgb = [25/STEP,25/STEP,25/STEP]
+rgb = [0,0,0]
 chn_list = ['R', 'G', 'B']
 
 cursor(chn)
@@ -81,7 +81,7 @@ while True:
 
         if val_old != val_new:
             val_old = val_new
-            print(f'{chn_list[chn]}={val_new*STEP}')
+            # print(f'{chn_list[chn]}={val_new*STEP}')
             rgb[chn] = val_new*STEP
             led[chn].duty_u16(int(val_new*STEP/100*(2**16-1)))
             bar(rgb,chn)
