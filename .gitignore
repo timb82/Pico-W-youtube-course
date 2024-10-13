@@ -1,4 +1,4 @@
 pico/
 modules/
 *.pyc
-secret
+secret.py
