@@ -3,9 +3,9 @@ from ssd1306 import SSD1306_I2C
 from utime import sleep
 
 # using default address 0x3C
-i2c = I2C(id=0, sda=Pin(4), scl=Pin(5))
+i2c = I2C(id=1, sda=Pin(6), scl=Pin(7))
 display = SSD1306_I2C(128, 64, i2c)
-display.rect(0,0,128,64,1, True)
+display.rect(0, 0, 128, 64, 1, True)
 display.text("Hej Ewka!!!", 5, 10, 0)
 display.text("Halo Marta!!!", 5, 30, 0)
 display.invert(1)
