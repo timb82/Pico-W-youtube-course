@@ -1,7 +1,7 @@
 from machine import Pin, I2C
 from ssd1306 import SSD1306_I2C
 from math import sin, cos, radians as rad
-from rotary import RotaryIRQ
+from old_rotary import RotaryIRQ
 
 CLK_PIN = 28
 DT_PIN = 27

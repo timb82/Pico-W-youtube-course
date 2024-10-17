@@ -2,7 +2,7 @@ from machine import Pin, I2C, PWM
 from utime import sleep
 from array import array
 from ssd1306 import SSD1306_I2C
-from rotary import RotaryIRQ
+from old_rotary import RotaryIRQ
 
 CLK_PIN = 28
 DT_PIN = 27
