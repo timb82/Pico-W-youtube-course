@@ -10,7 +10,8 @@
         "modules/out"
     ],
     "python.analysis.extraPaths": [
-        "/Data/Python/.micropico-stubs/included"
+        "/Data/Python/.micropico-stubs/included",
+        "./libs"
     ],
     "python.terminal.activateEnvironment": true,
     "python.analysis.extraPaths": [

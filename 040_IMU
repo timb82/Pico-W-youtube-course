@@ -1,0 +1,20 @@
+from machine import I2C, Pin
+from time import sleep_ms
+from imu import MPU6050
+from ssd1306 import SSD1306_I2C
+
+OLED_SDA_PIN = 6
+OLED_SCL_PIN = 7
+OLED_I2C_CHN = 1
+
+
+# i2c_imu = I2C(IMU_I2C_CHN, sda=Pin(IMU_SDA_PIN), scl=Pin(IMU_SCL_PIN), freq=400000)
+i2c = I2C(id=OLED_I2C_CHN, sda=OLED_SDA_PIN, scl=OLED_SCL_PIN)
+
+mpu = MPU6050(i2c)
+
+while True:
+    a_x = mpu.accel.x
+    a_y = mpu.accel.y
+    print(f"acceleration: X={a_x}g, Y={a_y}g")
+    sleep_ms(100)
