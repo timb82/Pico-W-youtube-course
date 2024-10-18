@@ -31,7 +31,7 @@ while True:
     elif az < -1:
         az = -1
     pitch = atan(ay / az) / 2 / pi * 360
-    yaw = atan(ax / az) / 2 / pi * 360
-    # print(f"X={a_x:+0.8f} g \tY={a_y:+0.8f} g \tZ={a_z:+0.8f} g")
-    print(f"tilt angle: X={yaw: .2f} \tY={pitch: .2f}\deg")
-    sleep_ms(100)
+    roll = atan(ax / az) / 2 / pi * 360
+    # print(f"X={ax:+0.8f} g \tY={ay:+0.8f} g \tZ={az:+0.8f} g")
+    print(f"tilt angle: \tX={roll: .2f} \tY={pitch: .2f}\t\tdeg")
+    sleep_ms(200)
