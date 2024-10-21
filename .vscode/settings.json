@@ -4,19 +4,17 @@
     "python.analysis.diagnosticSeverityOverrides": {
         "reportMissingModuleSource": "none"
     },
-    "python.analysis.stubPath": "pico/Lib/site-packages/stdlib",
+    "python.analysis.stubPath": "pico-stub/Lib/site-packages/stdlib",
     "python.analysis.typeshedPaths": [
         "/Data/Python/.micropico-stubs/included",
         "modules/out"
     ],
     "python.analysis.extraPaths": [
         "/Data/Python/.micropico-stubs/included",
-        "./libs"
+        "modules/out", 
+        "libs"
     ],
     "python.terminal.activateEnvironment": true,
-    "python.analysis.extraPaths": [
-        "modules/out/", 
-    ],
     "micropico.syncFolder": "",
     "micropico.openOnStart": true
 }
