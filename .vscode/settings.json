@@ -11,12 +11,10 @@
     ],
     "python.analysis.extraPaths": [
         "/Data/Python/.micropico-stubs/included",
-        "./libs"
+        "libs",
+        "modules/out/"
     ],
     "python.terminal.activateEnvironment": true,
-    "python.analysis.extraPaths": [
-        "modules/out/", 
-    ],
     "micropico.syncFolder": "",
     "micropico.openOnStart": true
 }

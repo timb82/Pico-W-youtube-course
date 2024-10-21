@@ -14,6 +14,9 @@ i2c = I2C(id=OLED_I2C_CHN, sda=OLED_SDA_PIN, scl=OLED_SCL_PIN)
 
 mpu = MPU6050(i2c)
 
+pitch_r=0
+roll_r=0
+
 while True:
     ax = mpu.accel.x
     ay = mpu.accel.y
@@ -30,8 +33,11 @@ while True:
         az = 1
     elif az < -1:
         az = -1
-    pitch = atan(ay / az) / 2 / pi * 360
-    roll = atan(ax / az) / 2 / pi * 360
+    conf_val = .5
+    pitch_r = (conf_val*atan(ay / az)+(1-conf_val)*pitch_r)
+    pitch = pitch_r / 2 / pi * 360
+    roll_r = (conf_val*atan(ax / az)+(1-conf_val)*roll_r)
+    roll = roll_r / 2 / pi * 360
     # print(f"X={ax:+0.8f} g \tY={ay:+0.8f} g \tZ={az:+0.8f} g")
     print(f"X={roll:+.5f}, Y={pitch:+.5f}")
-    sleep_ms(50)
+    sleep_ms(100)
