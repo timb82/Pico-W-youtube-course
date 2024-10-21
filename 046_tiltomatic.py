@@ -1,5 +1,5 @@
-from machine import I2C, Pin
-from time import sleep, ticks_ms
+from machine import I2C
+from time import sleep
 from imu import MPU6050
 from ssd1306 import SSD1306_I2C
 from math import atan, pi
@@ -16,17 +16,17 @@ mpu = MPU6050(i2c)
 dsp = SSD1306_I2C(128, 64, i2c)
 
 
-def refresh(dx, dy):
-    if dx > 45:
-        dx = 45
-    elif dx < -45:
-        dx = -45
-    if dy > 45:
-        dy = 45
-    elif dy < -45:
-        dy = -45
-    x = int(dx * 64 / 45)
-    y = int(dy * 27 / 45)
+def refresh(phi_x, phi_y):
+    if phi_x > 45:
+        phi_x = 45
+    elif phi_x < -45:
+        phi_x = -45
+    if phi_y > 45:
+        phi_y = 45
+    elif phi_y < -45:
+        phi_y = -45
+    x = int(phi_x * 64 / 45)
+    y = int(phi_y * 27 / 45)
     dsp.fill(0)
     dsp.hline(2, 38, 124, 1)
     dsp.vline(64, 12, 60, 1)
@@ -34,8 +34,8 @@ def refresh(dx, dy):
     dsp.ellipse(64 - x, 38 - y, 6, 5, 1, True)
     dsp.ellipse(64 - x + 1, 38 - y - 1, 2, 2, 0, True)
     dsp.pixel(64 - x + 2, 38 - y - 2, 1)
-    dsp.text(f"P:{dx:02.0f}", 0, 0, 1)
-    dsp.text(f"R:{dy:02.0f}", 92, 0, 1)
+    dsp.text(f"P:{phi_x:02.0f}", 0, 0, 1)
+    dsp.text(f"R:{phi_y:02.0f}", 92, 0, 1)
     dsp.show()
 
 
@@ -51,5 +51,5 @@ while True:
             a = -1
     pitch = int(atan(ay / az) / 2 / pi * 360)
     roll = int(atan(ax / az) / 2 / pi * 360)
-
+    sleep(0.01)
     refresh(pitch, roll)
