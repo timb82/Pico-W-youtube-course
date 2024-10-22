@@ -1,7 +1,7 @@
 x1 = 0
-y1 = 5
+y1 = 5 000 000
 x2 = 180
-y2 = 25
+y2 = 25 000 000
 # x1 = float(input("x1= "))
 # y1 = float(input("y1= "))
 # x2 = float(input("x2= "))

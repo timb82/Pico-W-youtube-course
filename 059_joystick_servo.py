@@ -81,12 +81,37 @@ class Joystick:
             exit(2)
 
 
+def duty(angle):
+    if angle < 0:
+        angle = 0
+    elif angle > 180:
+        angle = 180
+    return int(angle * 1e5 / 9 + 5e5)
+
+
+ang = 90
 joy = Joystick(JOY_X_PIN, JOY_Y_PIN, JOY_SW_PIN)
+servo = PWM(Pin(SERVO_PIN))
+servo.freq(50)
+servo.duty_ns(duty(ang))
 
 while True:
     # print(f"{joy.x:.1f}\t{joy.y:.1f}\t{(1-joy.sw)*100}")
-    print(f"x={joy.pos[0]}\ty={joy.pos[1]}\talpha={joy.angle} ")
-    sleep_ms(100)
+    # print(f"x={joy.pos[0]}\ty={joy.pos[1]}\talpha={joy.angle} ")
+    print(joy.pos[0], ang)
+    if joy.pos[0] < -12 and ang <= 180:
+        print("ping")
+        ang = ang - joy.pos[0] / 10
+    elif joy.pos[0] > 12 and ang >= 0:
+        print("pong")
+        ang = ang - joy.pos[0] / 10
+
+    if ang > 180:
+        ang = 180
+    elif ang < 0:
+        ang = 0
+    servo.duty_ns(duty(ang))
+    sleep_ms(50)
 
 
 """
