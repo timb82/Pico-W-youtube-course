@@ -1,6 +1,6 @@
 from machine import Pin, ADC, PWM
 from utime import sleep_ms
-from math import acos, sqrt, pi, atan2
+from math import sqrt, pi, atan2
 from sys import exit
 
 JOY_X_PIN = 27
