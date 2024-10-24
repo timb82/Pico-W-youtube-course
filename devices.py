@@ -1,4 +1,4 @@
-from machine import Pin, ADC
+from machine import Pin, ADC, PWM
 from time import sleep
 from math import atan2, sqrt, pi
 
@@ -61,7 +61,7 @@ class Joystick:
 
     @property
     def sw(self):
-        return self._sw.value()
+        return 1 - self._sw.value()
 
     @property
     def x(self):
@@ -94,9 +94,49 @@ class Joystick:
     @property
     def angle(self):
         m = self.mag
-        if m < 5:
+        if m < (self._dead_x**2 + self._dead_y**2) ** 0.5:
             return 0
         a = atan2(self.pos[1], self.pos[0]) / 2 / pi * 360
         if a < 0:
             a = a + 360
         return a
+
+
+class Servo:
+    def __init__(self, pin_no, freq=50, angle=0):
+        self._out = PWM(Pin(pin_no, Pin.OUT))
+        self._angle = angle
+        self._out.duty_ns(self._ang2duty(self._angle))
+        self._out.freq(freq)
+
+    def _ang2duty(self, angle):
+        if angle < 0:
+            angle = 0
+        elif angle > 180:
+            angle = 180
+        return int(angle * 1e5 / 9 + 5e5)
+
+    def _duty2ang(self, duty):
+        if duty < 500_000:
+            duty = 500_000
+        elif duty > 2_500_000:
+            duty = 2_500_000
+        return round(duty * 180 / 2e6 - 45, 2)
+
+    @property
+    def duty(self):
+        return self._out.duty_ns()
+
+    @duty.setter
+    def duty(self, duty):
+        # self._duty = duty
+        self._out.duty_ns(duty)
+
+    @property
+    def angle(self):
+        return self._angle
+
+    @angle.setter
+    def angle(self, angle):
+        self._angle = angle
+        self.duty = self._ang2duty(self._angle)

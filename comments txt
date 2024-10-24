@@ -1,0 +1,9 @@
+Hello mr McWhorter,
+
+First of all, the work you're doing on youtube is amazing. You have an amazing knowledge and ability to share it 
+
+
+variables scope:
+
+code timing for performance comparison (e.g. using the sort and average functions from one of the exercises)
+Maybe together with evaluation of memory used through gc module? I haven't tried the last one though and I have very little experience working with garbage collector.

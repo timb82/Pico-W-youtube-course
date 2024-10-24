@@ -3,11 +3,11 @@ from utime import sleep_ms
 
 
 class Servo:
-    def __init__(self, pin_no, freq=50, duty=0, angle=0):
-        self._out = PWM(Pin(pin_no))
-        self._duty = 0
-        self._freq = freq
-        self._angle = 0
+    def __init__(self, pin_no, freq=50, angle=0):
+        self._out = PWM(Pin(pin_no, Pin.OUT))
+        self._angle = angle
+        self._out.duty_ns(self._ang2duty(self._angle))
+        self._out.freq(freq)
 
     def _ang2duty(self, angle):
         if angle < 0:
@@ -25,13 +25,12 @@ class Servo:
 
     @property
     def duty(self):
-        return self._duty
+        return self._out.duty_ns()
 
     @duty.setter
     def duty(self, duty):
-        self._duty = duty
-        self._angle = self._duty2ang(duty)
-        self._out.duty_ns(self._duty)
+        # self._duty = duty
+        self._out.duty_ns(duty)
 
     @property
     def angle(self):
@@ -40,34 +39,52 @@ class Servo:
     @angle.setter
     def angle(self, angle):
         self._angle = angle
-        print("cha ching")
         self.duty = self._ang2duty(self._angle)
 
 
 if __name__ == "__main__":
-    from devices import Joystick
+    from devices import Joystick, LED
 
     JOY_X_PIN = 27
     JOY_Y_PIN = 26
     JOY_SW_PIN = 17
     SERVO_PIN = 16
+    LED_PIN = 15
 
     joy = Joystick(JOY_X_PIN, JOY_Y_PIN, JOY_SW_PIN)
     servo = Servo(SERVO_PIN, angle=90)
+    sw_last = 0
+    led = LED(15)
+
+    incremental_control = True  # switch beween incremental control based on x-axis and 1 for direct angle control
+    led._pin.value(int(incremental_control))
 
     while True:
         angle = servo.angle
-        print(f"{joy.pos[0]}\t {angle}\t {servo.duty}")
-        if joy.pos[0] < -12 and angle <= 180:
-            print("ping")
-            angle = angle - joy.pos[0] / 10
-        elif joy.pos[0] > 12 and angle >= 0:
-            print("pong")
-            angle = angle - joy.pos[0] / 10
+        if incremental_control:
+            # Incremental control on X-axis of the joystick
+            if joy.pos[0] < -12 and angle <= 180:
+                angle = angle - joy.pos[0] / 20
+            elif joy.pos[0] > 12 and angle >= 0:
+                angle = angle - joy.pos[0] / 20
+        else:
+            # Direct angle control
+            angle = joy.angle
+            if angle > 180:
+                angle = 360 - angle
+
+        # print(f"{incremental_control}\t{joy.sw}\t{angle}")
+
+        # Switch changes control mode between incremental and direct angle
+        sw = joy.sw
+        if sw_last == 0 and sw == 1:
+            incremental_control = bool(incremental_control ^ True)
+            led._pin.value(int(incremental_control))
+        sw_last = sw
 
         if angle > 180:
             angle = 180
         elif angle < 0:
             angle = 0
         servo.angle = angle
-        sleep_ms(150)
+        sleep_ms(50)
