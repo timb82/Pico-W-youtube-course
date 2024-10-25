@@ -2,8 +2,15 @@ Hello mr McWhorter,
 
 First of all, the work you're doing on youtube is amazing. You have an amazing knowledge and ability to share it 
 
+PEP8 - https://realpython.com/python-pep8/
 
-variables scope:
+f-strings
 
-code timing for performance comparison (e.g. using the sort and average functions from one of the exercises)
+variables scope: explain what is local and global scope, how the names are resolved at the beginning of a python script execution. Discuss why declaring abuse of global variables is considered bad practice, as they can lead to naming conflicts when importing multiple files. 
+I found a neat description of some of the pico's and micropython multithreading aspects with a class method based flagging instead of global variables. You could also easily use a Singleton design pattern for that purpose if you need to actually instantiate flagging class.
+https://bytesnbits.co.uk/multi-thread-coding-on-the-raspberry-pi-pico-in-micropython/
+
+https://refactoring.guru/design-patterns/singleton/python/example#example-1
+
+Another interesting subject that I have not yet seen in your videos is code benchmarking for performance comparison (e.g., timing the sort and average functions from one of the exercises and comparing with in-build functions). This may be a good opportunity to mention that some of the python libraries are written in C and are usually faster than custom counterparts implemented in python.
 Maybe together with evaluation of memory used through gc module? I haven't tried the last one though and I have very little experience working with garbage collector.

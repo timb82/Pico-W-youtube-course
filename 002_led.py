@@ -1,7 +1,7 @@
 from machine import Pin
 from utime import sleep
 
-led = Pin(13, Pin.OUT)
+led = Pin(14, Pin.OUT)
 
 while True:
     try:
