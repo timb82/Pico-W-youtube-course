@@ -4,14 +4,17 @@
     "python.analysis.diagnosticSeverityOverrides": {
         "reportMissingModuleSource": "none"
     },
-    "python.analysis.stubPath": "pico-stub/Lib/site-packages/stdlib",
     "python.analysis.typeshedPaths": [
         "modules/out",
-        "~/.micropico-stubs/included"
+        "~/.micropico-stubs/included",
+        ".venv/Lib",
+        "libs"
     ],
     "python.analysis.extraPaths": [
         "modules/out",
         "libs",
+        ".venv/Lib",
+        ".venv/Lib/site-packages/stdlib",
         "~/.micropico-stubs/included"
     ],
     "python.terminal.activateEnvironment": true,
