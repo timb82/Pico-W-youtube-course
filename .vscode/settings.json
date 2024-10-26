@@ -6,13 +6,13 @@
     },
     "python.analysis.stubPath": "pico-stub/Lib/site-packages/stdlib",
     "python.analysis.typeshedPaths": [
-        "/Data/Python/.micropico-stubs/included",
-        "modules/out"
+        "modules/out",
+        "~/.micropico-stubs/included"
     ],
     "python.analysis.extraPaths": [
-        "/Data/Python/.micropico-stubs/included",
-        "modules/out", 
-        "libs"
+        "modules/out",
+        "libs",
+        "~/.micropico-stubs/included"
     ],
     "python.terminal.activateEnvironment": true,
     "micropico.syncFolder": "",
