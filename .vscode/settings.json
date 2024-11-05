@@ -19,5 +19,10 @@
     ],
     "python.terminal.activateEnvironment": true,
     "micropico.syncFolder": "",
-    "micropico.openOnStart": true
+    "micropico.openOnStart": true,
+    "cSpell.words": [
+        "Pylance",
+        "shiftdir",
+        "Thonny"
+    ]
 }
