@@ -7,7 +7,7 @@ PIN_SRVO = 20
 # Example in python
 servo = Pin(PIN_SRVO, Pin.OUT)
 while True:
-    angle = 90
+    angle = 0
     pw = int(angle * 2000 / 180 + 500)
     servo.on()
     sleep_us(pw)
