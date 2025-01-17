@@ -11,20 +11,20 @@ servo = Pin(PIN_SRVO, Pin.OUT)
 @asm_pio(set_init=PIO.OUT_LOW, out_init=PIO.OUT_LOW, out_shiftdir=PIO.SHIFT_RIGHT)
 def servo_set():
     # set pulse width of 1500ms to osr
-    # set(x, 0b10111)
-    # in_(x, 5)
-    # set(x, 0b01110)
-    # in_(x, 5)
-    # set(x, 0b00000)
-    # in_(x, 1)
-    # mov(osr, isr)
+    set(x, 0b10111)
+    in_(x, 5)
+    set(x, 0b01110)
+    in_(x, 5)
+    set(x, 0b00000)
+    in_(x, 1)
+    mov(osr, isr)
 
     # set pulse width of 500ms to osr
-    set(x, 0b11111)
-    in_(x, 5)
-    set(x, 0b0100)
-    in_(x, 4)
-    mov(osr, isr)
+    # set(x, 0b11111)
+    # in_(x, 5)
+    # set(x, 0b0100)
+    # in_(x, 4)
+    # mov(osr, isr)
 
     # set period of 20_000ms to isr
     mov(isr, null)
