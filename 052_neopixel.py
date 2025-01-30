@@ -2,7 +2,7 @@ import neopixel
 from machine import Pin
 from time import sleep
 
-PIX_PIN = 5
+PIX_PIN = 0
 PIX_SIZE = 8
 pix = neopixel.NeoPixel(Pin(PIX_PIN, Pin.OUT), PIX_SIZE)
 
