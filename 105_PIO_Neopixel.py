@@ -1,11 +1,10 @@
-from array import array
 from rp2 import PIO, asm_pio, StateMachine
 from machine import Pin
 from time import sleep_ms as sleep
 
 PIN_NUM = 0
 NUM_LEDS = 8
-BRIGHTNESS = 0.1
+BRIGHTNESS = 0.05
 my_colors = [
     [64, 154, 255],
     [128, 0, 128],
@@ -64,7 +63,29 @@ def dim(colors, brightness):
     return new_cols
 
 
-write_np(dim(my_colors, BRIGHTNESS))
+def color_wheel(pos):
+    if pos < 0 or pos > 255:
+        return [0, 0, 0]
+    if pos < 85:
+        return [255 - pos * 3, pos * 3, 0]
+    if pos < 170:
+        pos -= 85
+        return [0, 255 - pos * 3, pos * 3]
+    pos -= 170
+    return [pos * 3, 0, 255 - pos * 3]
 
+
+def rainbow():
+    for i in range(256):
+        for p in range(NUM_LEDS):
+            color = (p * 256 // NUM_LEDS) + i
+            my_colors[p] = color_wheel(color & 0xFF)
+
+        write_np(dim(my_colors, BRIGHTNESS))
+        sleep(5)
+
+
+while True:
+    rainbow()
 # while True:
 #     pass
