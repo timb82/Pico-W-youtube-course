@@ -1,27 +1,15 @@
-# class Test:
-#     def __init__(self, value):
-#         self.value = value
-    
-  
-#     def set(self, value):
-#         self.value = value
+colors = [[10, 10, 10], [20, 20, 20], [30, 30, 30]]
 
-#     def get(self):
-#         return self.value
-    
 
-# t1 = Test(0)
-# t2 = Test(0)
-# t3 = Test(0)
+def dim(colors, brightness):
+    new_colors = []
+    for i in range(len(colors)):
+        new_colors.append(
+            [int(colors[i][j] * brightness) for j in range(len(colors[i]))]
+        )
+    return new_colors
 
-# test = [t1, t2, t3]
-# l = [1,2,3]
 
-# for tup in zip(test, l):
-#     print(tup[0].get(),tup[1])
-
-led = 'R G B'.split()
-vals = [1,2,3]
-for l,z in zip(led, vals):
-    print(l,z)
-
+cols = dim(colors, 0.1)
+print(cols)
+# print[colors]

@@ -1,9 +1,11 @@
+from array import array
 from rp2 import PIO, asm_pio, StateMachine
 from machine import Pin
 from time import sleep_ms as sleep
 
+PIN_NUM = 0
 NUM_LEDS = 8
-my_color = [0] * NUM_LEDS
+BRIGHTNESS = 0.1
 my_colors = [
     [64, 154, 255],
     [128, 0, 128],
@@ -16,8 +18,20 @@ my_colors = [
 ]
 
 
-@asm_pio(sideset_init=PIO.OUT_HIGH, out_shiftdir=0, autopull=True, pull_thresh=24)
+@asm_pio(sideset_init=PIO.OUT_LOW, out_shiftdir=0, autopull=True, pull_thresh=24)
 def ws2812():
+    # T1 = 2
+    # T2 = 5
+    # T3 = 3
+    # wrap_target()
+    # label("bitloop")
+    # out(x, 1).side(0)[T3 - 1]
+    # jmp(not_x, "do_zero").side(1)[T1 - 1]
+    # jmp("bitloop").side(1)[T2 - 1]
+    # label("do_zero")
+    # nop().side(0)[T2 - 1]
+    # wrap()
+
     wrap_target()
     label("bit_loop")
     out(x, 1).side(0)
@@ -33,7 +47,7 @@ def ws2812():
     wrap()
 
 
-sm = StateMachine(0, ws2812, freq=8000000, sideset_base=Pin(0))
+sm = StateMachine(0, ws2812, freq=8_000_000, sideset_base=Pin(PIN_NUM))
 sm.active(1)
 
 
@@ -42,6 +56,15 @@ def write_np(data):
         grb = color[1] << 16 | color[0] << 8 | color[2]
         sm.put(grb, 8)
 
+
+def dim(colors, brightness):
+    new_cols = []
+    for i in range(len(colors)):
+        new_cols.append([int(colors[i][j] * brightness) for j in range(len(colors[i]))])
+    return new_cols
+
+
+write_np(dim(my_colors, BRIGHTNESS))
 
 # while True:
 #     pass
