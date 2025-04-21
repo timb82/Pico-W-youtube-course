@@ -1,0 +1,11 @@
+[project]
+name = "pico-w-youtube-course"
+version = "0.1.0"
+description = "Raspberry pico W course with Paul McWhorter"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.2.5",
+    "pyqtgraph>=0.13.7",
+    "pyside6>=6.9.0",
+]
