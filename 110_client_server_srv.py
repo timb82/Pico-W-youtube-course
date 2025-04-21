@@ -1,13 +1,16 @@
 import network
 import usocket as socket
 import utime as time
-from machine import Pin
+from machine import Pin, Timer
 from secrets import SSID, PASSWD
 
 led_r = Pin(18, Pin.OUT)
 led_g = Pin(20, Pin.OUT)
 led_y = Pin(19, Pin.OUT)
 
+freq = 2
+active_led = None
+t = None
 
 print("connecting WiFi...")
 wlan = network.WLAN(network.STA_IF)
@@ -25,23 +28,58 @@ server_sock.bind((wlan.ifconfig()[0], 12345))
 
 print("server up and listening")
 
+
+def blinker(Source):
+    if active_led is not None:
+        active_led.toggle()
+
+
+def ticker():
+    t = Timer(period=int(1 / (freq * 2) * 1000), mode=Timer.PERIODIC, callback=blinker)
+    return t
+
+
 def set_color(color):
-    if color == 'red':
+    global active_led
+    global t
+    if t is not None:
+        t.deinit()
+        del t
+
+    if color == "red":
         led_r.on()
         led_g.off()
         led_y.off()
-    elif color == 'green':
+        active_led = led_r
+    elif color == "green":
         led_r.off()
         led_g.on()
         led_y.off()
-    elif color == 'yellow':
+        active_led = led_g
+    elif color == "yellow":
         led_r.off()
         led_g.off()
         led_y.on()
+        active_led = led_y
+
+    elif color[0:4] == "freq":
+        global freq
+        freq = float(color.split("=")[-1])
+        if t is not None:
+            t.deinit()
+        if freq > 0 and active_led is not None:
+            t = ticker()
+
     else:
+        active_led = None
         led_r.off()
         led_g.off()
         led_y.off()
+        t = None
+
+    if freq > 0 and active_led is not None:
+        active_led = led_r
+        t = ticker()
 
 
 while True:
@@ -53,9 +91,3 @@ while True:
     data = request.decode()
     set_color(data)
     server_sock.sendto(data.encode(), client_addr)
-
-
-
-
-
-
