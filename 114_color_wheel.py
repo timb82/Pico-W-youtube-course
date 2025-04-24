@@ -13,10 +13,11 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QTimer
 
 DELAY_MS = 50  # Delay in milliseconds
+IP = "192.168.1.92"
 
 client_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 client_sock.settimeout(DELAY_MS / 1000)  # Set timeout for socket operations
-server_address = ("192.168.1.92", 54321)
+server_address = (IP, 54321)
 
 
 num_points = 200

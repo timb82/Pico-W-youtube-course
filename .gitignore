@@ -3,4 +3,5 @@ pico-stub/
 modules/
 *.pyc
 secret.py
-secrets.py
+secret*.py
+
