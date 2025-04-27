@@ -5,7 +5,7 @@ import socket
 from PySide6.QtWidgets import (
     QApplication,
     QVBoxLayout,
-    QWidget,
+    QMainWindow,
     QSlider,
     QLabel,
     QCheckBox,
@@ -98,7 +98,7 @@ class ColorPlotsController:
         self.freq = val / 10
         slider_label.setText(f"Frequency: {self.freq} Hz")
 
-    def update_weights(self, val):
+    def update_weights(self, sliders, val):
         self.kR = sliders["red"].value() / 100
         self.kG = sliders["green"].value() / 100
         self.kB = sliders["blue"].value() / 100
@@ -127,69 +127,76 @@ plot_controller = ColorPlotsController(num_points, freq, A, offset)
 
 # Initialize PyQtGraph and create the GUI
 app = QApplication(sys.argv)
-window = QWidget()
-window.setWindowTitle("Sine waves")
-window.setGeometry(100, 100, 800, 600)
-main_layout = QHBoxLayout(window)
-main_layout.setContentsMargins(5, 5, 5, 5)
-left_layout = QVBoxLayout(window)
-
-slider_label = QLabel("Frequency: 1 Hz")
-left_layout.addWidget(slider_label)
-
-slider_f = QSlider(Qt.Horizontal)
-slider_f.setMinimum(1)
-slider_f.setMaximum(40)
-slider_f.setValue(10)
-slider_f.valueChanged.connect(plot_controller.update_freq)
-left_layout.addWidget(slider_f)
-
-graph = pg.PlotWidget()
-left_layout.addWidget(graph)
-graph.setYRange(-1.25 * A + offset, 1.25 * A + offset)
-graph.showGrid(True, True)
-
-sin_R = graph.plot([0], [0], pen=pg.mkPen("r", width=3))
-sin_G = graph.plot([0], [0], pen=pg.mkPen("g", width=3))
-sin_B = graph.plot([0], [0], pen=pg.mkPen("b", width=3))
-
-toggle_chase_chkbox = QCheckBox("Chase Mode")
-toggle_chase_chkbox.stateChanged.connect(plot_controller.toggle_chase)
-left_layout.addWidget(toggle_chase_chkbox)
-
-rst_button = QPushButton("Reset")
-rst_button.setMaximumWidth(100)
-rst_button.clicked.connect(plot_controller.reset_phases)
-left_layout.addWidget(rst_button)
-
-timer = QTimer()
-timer.timeout.connect(plot_controller.update_plot)
-timer.start(DELAY_MS)
 
 
-right_layout = QVBoxLayout(window)
-right_layout.setContentsMargins(5, 10, 5, 50)
+class MainWindow(QMainWindow):
+    def __init__(self, ctrl, delay_ms=DELAY_MS):
+        super().__init__()
+        self.setWindowTitle("Sine Waves")
+        self.setGeometry(100, 100, 800, 600)
 
-header_layout = QHBoxLayout(window)
-sliders_layout = QHBoxLayout(window)
-sliders_layout.setContentsMargins(0, 15, 0, 0)
+        self.main_layout = QHBoxLayout(self)
+        self.main_layout.setContentsMargins(5, 5, 5, 5)
 
+        self.left_layout = QVBoxLayout(self)
+        self.slider_label = QLabel("Frequency: 1 Hz")
+        self.left_layout.addWidget(self.slider_label)
 
-sliders = {}
-for color, label in zip(["red", "green", "blue"], ["  Red", "Green", " Blue"]):
-    label_widget = QLabel(label)
-    label_widget.setStyleSheet(f"color: {color}; font-size: 15px;")
-    header_layout.addWidget(label_widget)
+        self.slider_f = QSlider(Qt.Horizontal)
+        self.slider_f.setMinimum(1)
+        self.slider_f.setMaximum(40)
+        self.slider_f.setValue(10)
+        self.slider_f.valueChanged.connect(ctrl.update_freq)
+        self.left_layout.addWidget(self.slider_f)
 
-    sliders[color] = QSlider(Qt.Vertical)
-    sliders[color].setMinimum(0)
-    sliders[color].setMaximum(100)
-    sliders[color].setValue(100)
-    sliders[color].setMinimumWidth(50)
-    sliders[color].setObjectName("slider_" + color)
-    sliders[color].valueChanged.connect(plot_controller.update_weights)
-    sliders[color].setStyleSheet(f"QSlider::handle:vertical {{background: {color};}}")
-    sliders_layout.addWidget(sliders[color])
+        self.graph = pg.PlotWidget()
+        self.left_layout.addWidget(self.graph)
+        self.graph.setYRange(-1.25 * ctrl.A + ctrl.offset, 1.25 * ctrl.A + ctrl.offset)
+        self.graph.showGrid(True, True)
+
+        self.sin_R = self.graph.plot([0], [0], pen=pg.mkPen("r", width=3))
+        self.sin_G = self.graph.plot([0], [0], pen=pg.mkPen("g", width=3))
+        self.sin_B = self.graph.plot([0], [0], pen=pg.mkPen("b", width=3))
+
+        self.toggle_chase_chkbox = QCheckBox("Chase Mode")
+        self.toggle_chase_chkbox.stateChanged.connect(ctrl.toggle_chase)
+        self.left_layout.addWidget(self.toggle_chase_chkbox)
+
+        self.rst_button = QPushButton("Reset")
+        self.rst_button.setMaximumWidth(100)
+        self.rst_button.clicked.connect(ctrl.reset_phases)
+        self.left_layout.addWidget(self.rst_button)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(ctrl.update_plot)
+        self.timer.start(delay_ms)
+
+        self.right_layout = QVBoxLayout(self)
+        self.right_layout.setContentsMargins(5, 10, 5, 50)
+
+        self.header_layout = QHBoxLayout(self)
+        self.sliders_layout = QHBoxLayout(self)
+        self.sliders_layout.setContentsMargins(0, 15, 0, 0)
+
+        self.sliders = {}
+
+    for color, label in zip(["red", "green", "blue"], ["  Red", "Green", " Blue"]):
+        label_widget = QLabel(label)
+        label_widget.setStyleSheet(f"color: {color}; font-size: 15px;")
+        header_layout.addWidget(label_widget)
+
+        sliders[color] = QSlider(Qt.Vertical)
+        sliders[color].setMinimum(0)
+        sliders[color].setMaximum(100)
+        sliders[color].setValue(100)
+        sliders[color].setMinimumWidth(50)
+        sliders[color].setObjectName("slider_" + color)
+        sliders[color].valueChanged.connect(plot_controller.update_weights)
+        sliders[color].setStyleSheet(
+            f"QSlider::handle:vertical {{background: {color};}}"
+        )
+        sliders_layout.addWidget(sliders[color])
+
 
 right_layout.addLayout(header_layout)
 right_layout.addLayout(sliders_layout)
