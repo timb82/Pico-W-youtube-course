@@ -99,16 +99,12 @@ class ColorPlotsController:
         slider_label.setText(f"Frequency: {self.freq} Hz")
 
     def update_weights(self, val):
-        for k, slider in zip([self.kR, self.kG, self.kB], sliders):
-            k = slider.value() / 100
-            if not self.verbose:
-                print(f"{slider.objectName()} value: {k}")
+        self.kR = sliders["red"].value() / 100
+        self.kG = sliders["green"].value() / 100
+        self.kB = sliders["blue"].value() / 100
 
-        print(self.kR, self.kG, self.kB, "\n")
-
-        # kR = slider_r.value() / 100
-        # self.kG = slider_g.value() / 100
-        # self.kB = slider_b.value() / 100
+        if self.verbose:
+            print(self.kR, self.kG, self.kB, "\n")
 
     def toggle_chase(self, state):
         if state:
@@ -179,49 +175,21 @@ sliders_layout = QHBoxLayout(window)
 sliders_layout.setContentsMargins(0, 15, 0, 0)
 
 
-sliders = []
+sliders = {}
 for color, label in zip(["red", "green", "blue"], ["  Red", "Green", " Blue"]):
     label_widget = QLabel(label)
     label_widget.setStyleSheet(f"color: {color}; font-size: 15px;")
     header_layout.addWidget(label_widget)
 
-    slider = QSlider(Qt.Vertical)
-    sliders.append(slider)
-    slider.setMinimum(0)
-    slider.setMaximum(100)
-    slider.setValue(100)
-    slider.setMinimumWidth(50)
-    slider.setObjectName("slider_" + color)
-    slider.valueChanged.connect(plot_controller.update_weights)
-    sliders_layout.addWidget(slider)
-
-
-# slider_r = QSlider(Qt.Vertical)
-# slider_r.setMinimum(0)
-# slider_r.setMaximum(100)
-# slider_r.setValue(100)
-# slider_r.setMinimumWidth(50)
-# slider_r.valueChanged.connect(plot_controller.update_weights)
-# slider_r
-
-
-# slider_g = QSlider(Qt.Vertical)
-# slider_g.setMinimum(0)
-# slider_g.setMaximum(100)
-# slider_g.setValue(100)
-# slider_g.setMinimumWidth(50)
-# slider_g.valueChanged.connect(plot_controller.update_weights)
-
-# slider_b = QSlider(Qt.Vertical)
-# slider_b.setMinimum(0)
-# slider_b.setMaximum(100)
-# slider_b.setValue(100)
-# slider_b.setMinimumWidth(50)
-# slider_b.valueChanged.connect(plot_controller.update_weights)
-
-# sliders_layout.addWidget(slider_r)
-# sliders_layout.addWidget(slider_g)
-# sliders_layout.addWidget(slider_b)
+    sliders[color] = QSlider(Qt.Vertical)
+    sliders[color].setMinimum(0)
+    sliders[color].setMaximum(100)
+    sliders[color].setValue(100)
+    sliders[color].setMinimumWidth(50)
+    sliders[color].setObjectName("slider_" + color)
+    sliders[color].valueChanged.connect(plot_controller.update_weights)
+    sliders[color].setStyleSheet(f"QSlider::handle:vertical {{background: {color};}}")
+    sliders_layout.addWidget(sliders[color])
 
 right_layout.addLayout(header_layout)
 right_layout.addLayout(sliders_layout)
