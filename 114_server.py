@@ -5,9 +5,9 @@ from machine import PWM, Pin
 from secrets import SSID, PASSWD
 
 freq = 1000
-led_g = PWM(Pin(20))
-led_r = PWM(Pin(19))
-led_b = PWM(Pin(18))
+led_g = PWM(Pin(19))
+led_r = PWM(Pin(18))
+led_b = PWM(Pin(20))
 
 led_g.freq(freq)
 led_r.freq(freq)
