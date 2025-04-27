@@ -58,7 +58,7 @@ class MainWindow(QWidget):
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_plot)
-        self.timer.start(delay_ms)  # Update every 50 ms
+        self.timer.start(delay_ms)
 
         # LEFT SIDE LAYOUT
         self.slider_label = QLabel("Frequency: 1 Hz")
@@ -93,26 +93,16 @@ class MainWindow(QWidget):
         footer_layout.setContentsMargins(5, 5, 5, 5)
         left_layout.addLayout(footer_layout)
 
-        # composite_button = QPushButton("RGB")
-        # red_button = QPushButton("Red")
-        # green_button = QPushButton("Green")
-        # blue_button = QPushButton("Blue")
-        # self.button_bar = [composite_button, red_button, green_button, blue_button]
-
-        # for button in self.button_bar:
-        #     button.setFixedSize(50, 30)
-        #     footer_layout.addWidget(button)
-
         self.button_bar = {}
         for btn_name in ["RGB", "Red", "Green", "Blue"]:
             self.button_bar[btn_name] = QPushButton(btn_name)
-            self.button_bar[btn_name].setMaximumWidth(100)
+            self.button_bar[btn_name].setFixedSize(50, 40)
             footer_layout.addWidget(self.button_bar[btn_name])
 
         # RIGHT SIDE LAYOUT
         header_layout = QHBoxLayout(self)
         sliders_layout = QHBoxLayout(self)
-        sliders_layout.setContentsMargins(0, 15, 0, 0)
+        sliders_layout.setContentsMargins(0, 15, 0, 60)
         right_layout.addLayout(header_layout)
         right_layout.addLayout(sliders_layout)
 
@@ -199,9 +189,6 @@ class MainWindow(QWidget):
             f"{int(my_color.red())},{int(my_color.green())},{int(my_color.blue())}"
         )
 
-        # self.button_bar[0].setStyleSheet(
-        #     f"background-color: {my_color.name()}; border-radius: 15px; min-width: 40px; min-height: 30px; font-size: 15px; color: white;"
-        # )
         colors = [
             my_color,
             QColor(my_color.red(), 0, 0),
@@ -209,7 +196,7 @@ class MainWindow(QWidget):
             QColor(0, 0, my_color.blue()),
         ]
         for btn, color in zip(self.button_bar.values(), colors):
-            style_str = f"background-color: {color.name()}; border-radius: 15px; min-width: 40px; min-height: 30px; font-size: 15px; color: white;"
+            style_str = f"background-color: {color.name()}; border-radius: 16px; min-width: 50px; min-height: 40px; font-size: 15px; color: white;"
             btn.setStyleSheet(style_str)
 
         try:
