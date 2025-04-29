@@ -5,32 +5,49 @@ PIN_BACKWARD = 14
 PIN_FORWARD = 15
 FREQ = 1000  # Frequency in Hz
 
-pin_f = Pin(PIN_FORWARD, Pin.OUT)
-pin_b = Pin(PIN_BACKWARD, Pin.OUT)
 
-# forward
-f_pwm = PWM(pin_f)
-f_pwm.freq(FREQ)  # Set frequency to 1 kHz
-# reverse
-r_pwm = PWM(pin_b)
-r_pwm.freq(FREQ)  # Set frequency to 1 kHz
+class MotorDC:
+    def __init__(self, freq):
+    self.pin_f = Pin(PIN_FORWARD, Pin.OUT)
+    self.pin_b = Pin(PIN_BACKWARD, Pin.OUT)
+
+    # forward
+    self.f_pwm = PWM(self.pin_f)
+    self.f_pwm.freq(freq)  # Set frequency to 1 kHz
+    # reverse
+    self.r_pwm = PWM(self.pin_b)
+    self.r_pwm.freq(freq)  # Set frequency to 1 kHz
 
 
 try:
     while True:
+        r_pwm.duty_u16(0)
+        f_pwm.duty_u16(0)
+
         for speed in range(20, 101, 10):
-            # r_pwm.duty_u16(0)
             # f_pwm.duty_u16(int(speed * 65535 / 100))  # Set duty cycle to speed
             time.sleep(0.25)
             print(speed)
 
         for speed in range(90, -1, -10):
-            # r_pwm.duty_u16(0)
             # f_pwm.duty_u16(int(speed * 65535 / 100))  # Set duty cycle to speed
             time.sleep(0.25)
             print(speed)
 
-        time.sleep(1)
+        r_pwm.duty_u16(0)
+        f_pwm.duty_u16(0)
+        time.sleep(2)
+
+        for speed in range(20, 101, 10):
+            # r_pwm.duty_u16(int(speed * 65535 / 100))  # Set duty cycle to speed
+            time.sleep(0.25)
+            print(speed)
+
+        for speed in range(90, -1, -10):
+            # r_pwm.duty_u16(int(speed * 65535 / 100))  # Set duty cycle to speed
+            time.sleep(0.25)
+            print(speed)
+
 
 
 except KeyboardInterrupt:
